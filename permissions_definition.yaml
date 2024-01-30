@@ -1,0 +1,81 @@
+ssh-clippie:
+  main_directory:
+    condition: mandatory
+    type: directory
+    mode: "700"
+    description: SSH client configuration directory
+    file_types:
+      - private_key
+      - public_key
+  files:
+    - name: known_hosts
+      condition: optional
+      type: file
+      mode: "600"
+      description: list of host keys known to the user
+    - name: known_hosts2
+      condition: not expected
+      type: file
+      mode: "600"
+      description: list of host keys known to the user, backup file
+    - name: authorized_keys
+      condition: optional
+      type: file
+      mode: "600"
+      description: public keys that can be used to log in as this user
+    - name: authorized_keys2
+      condition: not expected
+      type: file
+      mode: "600"
+      description: public keys that can be used to log in as this user, backup file
+    - name: config
+      condition: optional
+      type: file
+      mode: "600"
+      description: user configuration file
+    - name: environment
+      condition: optional
+      type: file
+      mode: "600"
+      description: additional environment variables
+    - name: rc
+      condition: optional
+      type: file
+      mode: "600"
+      description: executed when the user logs in
+    - name: config.d
+      condition: optional
+      type: directory
+      mode: "700"
+      description: configuration snippets
+      file_types:
+        - ascii_text
+    - name: scripts.d
+      condition: optional
+      type: directory
+      mode: "700"
+      description: additional scripts
+      file_types:
+          - executable_script
+    - name: agent.sock
+      condition: optional
+      type: socket
+      mode: "600"
+      description: SSH agent socket
+  types:
+    private_key:
+      name: OpenSSH private key
+      pattern: ".* private key$"
+      mode: "600"
+    public_key:
+      name: OpenSSH public key
+      pattern: ".* public key$"
+      mode: "600"
+    executable_script:
+      name: executable script
+      pattern: ".*script.*executable.*"
+      mode: "700"
+    ascii_text:
+      name: ascii text file
+      pattern: ".*ASCII text.*"
+      mode: "600"

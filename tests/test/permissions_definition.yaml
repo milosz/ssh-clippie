@@ -1,0 +1,45 @@
+ssh-clippie:
+  main_directory:
+    condition: mandatory
+    type: directory
+    mode: "700"
+    description: SSH client configuration directory
+    file_types:
+      - private_key
+      - public_key
+  files:
+    - name: known_hosts
+      condition: optional
+      type: file
+      mode: "600"
+      description: list of host keys known to the user
+    - name: known_hosts2
+      condition: not expected
+      type: file
+      mode: "600"
+      description: list of host keys known to the user, backup file
+    - name: config
+      condition: mandatory
+      type: file
+      mode: "600"
+      description: user configuration file
+    - name: config.d
+      condition: optional
+      type: directory
+      mode: "700"
+      description: configuration snippets
+      file_types:
+        - ascii_text
+  types:
+    private_key:
+      name: OpenSSH private key
+      pattern: ".* private key$"
+      mode: "600"
+    public_key:
+      name: OpenSSH public key
+      pattern: ".* public key$"
+      mode: "600"
+    ascii_text:
+      name: ascii text file
+      pattern: ".*ASCII text.*"
+      mode: "600"
