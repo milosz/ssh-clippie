@@ -138,7 +138,7 @@ executable script matching file type ".*script.*executable.*" should have permis
 ascii text file matching file type ".*ASCII text.*" should have permissions set to 600.
 ```
 
-Perform check using quiet mode using exit code to determine success or failure.
+Perform check in quiet mode using exit code to determine success or failure.
 
 ```
 $ ssh-clippie --quiet
