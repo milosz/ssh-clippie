@@ -3,51 +3,51 @@ import io
 import unittest.mock
 from unittest import TestCase
 
-import utils
+import ssh_clippie.utils
 
 
 class Test(TestCase):
     def test_set_verbose_mode(self):
         # verbose mode
-        utils.set_verbose_mode("verbose")
-        self.assertTrue(utils.output.get_verbose_mode())
+        ssh_clippie.utils.set_verbose_mode("verbose")
+        self.assertTrue(ssh_clippie.utils.output.get_verbose_mode())
 
         # quiet mode
-        utils.set_verbose_mode("quiet")
-        self.assertFalse(utils.output.get_verbose_mode())
+        ssh_clippie.utils.set_verbose_mode("quiet")
+        self.assertFalse(ssh_clippie.utils.output.get_verbose_mode())
 
     def test_set_ssh_directory(self):
         # custom
         ssh_directory = "/home/user/.ssh"
-        utils.set_ssh_directory(ssh_directory)
-        self.assertEqual(utils.directory.get_ssh_directory(), ssh_directory)
+        ssh_clippie.utils.set_ssh_directory(ssh_directory)
+        self.assertEqual(ssh_clippie.utils.directory.get_ssh_directory(), ssh_directory)
 
     @unittest.mock.patch("sys.stdout", new_callable=io.StringIO)
     def test_print_message_verbose(self, mock_stdout):
         message = "Hello World!"
-        utils.set_verbose_mode("verbose")
-        utils.output.print_message(message)
+        ssh_clippie.utils.set_verbose_mode("verbose")
+        ssh_clippie.utils.output.print_message(message)
         self.assertEqual(mock_stdout.getvalue(), f"{message}\n")
 
     @unittest.mock.patch("sys.stdout", new_callable=io.StringIO)
     def test_print_message_quiet(self, mock_stdout):
         message = "Hello World!"
-        utils.set_verbose_mode("quiet")
-        utils.output.print_message(message)
+        ssh_clippie.utils.set_verbose_mode("quiet")
+        ssh_clippie.utils.output.print_message(message)
         self.assertEqual(mock_stdout.getvalue(), "")
 
     @unittest.mock.patch("sys.stdout", new_callable=io.StringIO)
     def test_print_header_verbose(self, mock_stdout):
         message = "Hello World!"
-        utils.set_verbose_mode("verbose")
-        utils.output.print_header(message)
+        ssh_clippie.utils.set_verbose_mode("verbose")
+        ssh_clippie.utils.output.print_header(message)
         self.assertEqual(mock_stdout.getvalue(), f"{message}\n")
 
     @unittest.mock.patch("sys.stdout", new_callable=io.StringIO)
     def test_print_header_quiet(self, mock_stdout):
         message = "Hello World!"
-        utils.set_verbose_mode("quiet")
-        utils.output.print_header(message)
+        ssh_clippie.utils.set_verbose_mode("quiet")
+        ssh_clippie.utils.output.print_header(message)
         self.assertEqual(mock_stdout.getvalue(), "")
 
     @unittest.mock.patch("sys.stdout", new_callable=io.StringIO)
@@ -57,7 +57,7 @@ class Test(TestCase):
         sub_message = "empty"
         message = "should not exist"
 
-        utils.output.print_error_message(file_type, file_path, sub_message, message)
+        ssh_clippie.utils.output.print_error_message(file_type, file_path, sub_message, message)
         self.assertEqual(
             mock_stdout.getvalue(),
             f"{file_type} {file_path} ({sub_message}) {message}\n",
@@ -70,7 +70,7 @@ class Test(TestCase):
         current_value = "700"
         expected_value = "600"
 
-        utils.output.print_error_message_with_fix(
+        ssh_clippie.utils.output.print_error_message_with_fix(
             file_type, file_path, current_value, expected_value
         )
         self.assertEqual(
@@ -89,37 +89,37 @@ class Test(TestCase):
 
         # directory
         mock_is_dir.return_value = True
-        self.assertEqual(utils.files.get_file_type(filename), "directory")
+        self.assertEqual(ssh_clippie.utils.files.get_file_type(filename), "directory")
         mock_is_dir.return_value = False
 
         # socket
         mock_is_socket.return_value = True
-        self.assertEqual(utils.files.get_file_type(filename), "socket")
+        self.assertEqual(ssh_clippie.utils.files.get_file_type(filename), "socket")
         mock_is_socket.return_value = False
 
         # valid symlink
         mock_is_file.return_value = True
         mock_is_symlink.return_value = True
-        self.assertEqual(utils.files.get_file_type(filename), "symlink to file")
+        self.assertEqual(ssh_clippie.utils.files.get_file_type(filename), "symlink to file")
 
         # invalid symlink
         mock_is_file.return_value = False
         mock_is_symlink.return_value = True
-        self.assertEqual(utils.files.get_file_type(filename), "broken symlink")
+        self.assertEqual(ssh_clippie.utils.files.get_file_type(filename), "broken symlink")
 
     @unittest.mock.patch("os.stat")
     def test_get_permissions(self, mock_os_stat):
         filename = "nonexistent_filename"
 
         mock_os_stat.return_value.st_mode = 0o755
-        self.assertEqual(utils.files.get_permissions(filename), "755")
+        self.assertEqual(ssh_clippie.utils.files.get_permissions(filename), "755")
 
     @unittest.mock.patch("sys.stdout", new_callable=io.StringIO)
     def test_exit_application(self, mock_stdout):
         # exit 0
-        utils.exit.exit_status = 0
+        ssh_clippie.utils.exit.exit_status = 0
         with self.assertRaises(SystemExit) as exit_test:
-            utils.exit_application()
+            ssh_clippie.utils.exit_application()
         self.assertEqual(exit_test.exception.code, 0)
         self.assertEqual(mock_stdout.getvalue(), "Success\n")
 
@@ -128,17 +128,17 @@ class Test(TestCase):
         mock_stdout.seek(0)
 
         # exit errno.EACCES
-        utils.exit.set_exit_status(errno.EACCES)
+        ssh_clippie.utils.exit.set_exit_status(errno.EACCES)
         with self.assertRaises(SystemExit) as exit_test:
-            utils.exit_application()
+            ssh_clippie.utils.exit_application()
         self.assertEqual(exit_test.exception.code, errno.EACCES)
         self.assertEqual(mock_stdout.getvalue(), "Failed\n")
 
     def test_load_permissions_definition(self):
-        yaml_file = "tests/test/permissions_definition.yaml"
-        utils.load_permissions_definition(yaml_file)
+        yaml_file = "ssh_clippie/tests/test/permissions_definition.yaml"
+        ssh_clippie.utils.load_permissions_definition(yaml_file)
 
-        permissions_definition_object = utils.definition.get_permissions_definition()
+        permissions_definition_object = ssh_clippie.utils.definition.get_permissions_definition()
 
         self.assertIn("ssh-clippie", permissions_definition_object)
         self.assertIn("main_directory", permissions_definition_object["ssh-clippie"])
@@ -166,10 +166,10 @@ class Test(TestCase):
             "description": "list of host keys known to the user",
         }
         self.assertDictEqual(
-            utils.definition.permissions_definition_get_file("known_hosts"), file_object
+            ssh_clippie.utils.definition.permissions_definition_get_file("known_hosts"), file_object
         )
         self.assertDictEqual(
-            utils.definition.permissions_definition_get_file("nonexistent"), {}
+            ssh_clippie.utils.definition.permissions_definition_get_file("nonexistent"), {}
         )
         self.assertIn("types", permissions_definition_object["ssh-clippie"])
 
@@ -179,17 +179,17 @@ class Test(TestCase):
             "mode": "600",
         }
         self.assertDictEqual(
-            utils.definition.permissions_definition_get_file_type("private_key"),
+            ssh_clippie.utils.definition.permissions_definition_get_file_type("private_key"),
             type_object,
         )
 
     @unittest.mock.patch("sys.stdout", new_callable=io.StringIO)
     def test_display_file_types(self, mock_stdout):
-        yaml_file = "tests/test/permissions_definition.yaml"
-        utils.load_permissions_definition(yaml_file)
+        yaml_file = "ssh_clippie/tests/test/permissions_definition.yaml"
+        ssh_clippie.utils.load_permissions_definition(yaml_file)
 
-        private_key = utils.definition.display_file_types(
-            utils.definition.permissions_definition["ssh-clippie"]["main_directory"][
+        ssh_clippie.utils.definition.display_file_types(
+            ssh_clippie.utils.definition.permissions_definition["ssh-clippie"]["main_directory"][
                 "file_types"
             ]
         )
@@ -200,10 +200,10 @@ class Test(TestCase):
 
     @unittest.mock.patch("sys.stdout", new_callable=io.StringIO)
     def test_explain(self, mock_stdout):
-        yaml_file = "tests/test/permissions_definition.yaml"
-        utils.load_permissions_definition(yaml_file)
+        yaml_file = "ssh_clippie/tests/test/permissions_definition.yaml"
+        ssh_clippie.utils.load_permissions_definition(yaml_file)
 
-        utils.explain()
+        ssh_clippie.utils.explain()
 
         self.assertIn(
             "Main directory should have permissions set to 700 and can contain OpenSSH private key, OpenSSH public key",
@@ -220,39 +220,39 @@ class Test(TestCase):
 
     @unittest.mock.patch("sys.stdout", new_callable=io.StringIO)
     def test_check_permissions(self, mock_stdout):
-        yaml_file = "tests/test/permissions_definition.yaml"
-        utils.load_permissions_definition(yaml_file)
+        yaml_file = "ssh_clippie/tests/test/permissions_definition.yaml"
+        ssh_clippie.utils.load_permissions_definition(yaml_file)
 
-        utils.set_ssh_directory("tests/test/ssh")
+        ssh_clippie.utils.set_ssh_directory("ssh_clippie/tests/test/ssh")
 
-        utils.check_permissions()
+        ssh_clippie.utils.check_permissions()
 
         self.assertIn(
-            "Checking tests/test/ssh directory",
+            "Checking ssh_clippie/tests/test/ssh directory",
             mock_stdout.getvalue(),
         )
 
         self.assertIn(
-            "Main directory tests/test/ssh permission are 777 should be 700",
+            "Main directory ssh_clippie/tests/test/ssh permission are 777 should be 700",
             mock_stdout.getvalue(),
         )
 
         self.assertIn(
-            "file tests/test/ssh/config does not exist",
+            "file ssh_clippie/tests/test/ssh/config does not exist",
             mock_stdout.getvalue(),
         )
 
         self.assertIn(
-            "directory tests/test/ssh/config.d permission are 777 should be 700",
+            "directory ssh_clippie/tests/test/ssh/config.d permission are 777 should be 700",
             mock_stdout.getvalue(),
         )
 
         self.assertIn(
-            "file tests/test/ssh/config.d/unexpected_file (empty) should not exists",
+            "file ssh_clippie/tests/test/ssh/config.d/unexpected_file (empty) should not exists",
             mock_stdout.getvalue(),
         )
 
         self.assertIn(
-            "file tests/test/ssh/known_hosts2 should not exist",
+            "file ssh_clippie/tests/test/ssh/known_hosts2 should not exist",
             mock_stdout.getvalue(),
         )

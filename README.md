@@ -181,22 +181,18 @@ $ pip install --editable .
 Defaulting to user installation because normal site-packages is not writeable
 Obtaining file:///mnt/c/Users/milos/PycharmProjects/ssh-clippie
   Preparing metadata (setup.py) ... done
-Requirement already satisfied: click==8.1.7 in /home/milosz/.local/lib/python3.10/site-packages (from ssh-clippie==0.8.0) (8.1.7)
-Requirement already satisfied: python-magic==0.4.27 in /home/milosz/.local/lib/python3.10/site-packages (from ssh-clippie==0.8.0) (0.4.27)
-Requirement already satisfied: pyyaml==6.0.1 in /home/milosz/.local/lib/python3.10/site-packages (from ssh-clippie==0.8.0) (6.0.1)
+Requirement already satisfied: click==8.1.7 in /home/milosz/.local/lib/python3.10/site-packages (from ssh-clippie==0.8.3) (8.1.7)
+Requirement already satisfied: python-magic==0.4.27 in /home/milosz/.local/lib/python3.10/site-packages (from ssh-clippie==0.8.3) (0.4.27)
+Requirement already satisfied: pyyaml==6.0.1 in /home/milosz/.local/lib/python3.10/site-packages (from ssh-clippie==0.8.3) (6.0.1)
 Installing collected packages: ssh-clippie
-  Attempting uninstall: ssh-clippie
-    Found existing installation: ssh-clippie 1.0.0
-    Uninstalling ssh-clippie-1.0.0:
-      Successfully uninstalled ssh-clippie-1.0.0
   Running setup.py develop for ssh-clippie
-Successfully installed ssh-clippie-0.8.0
+Successfully installed ssh-clippie-0.8.3
 ```
 
 Execute tests.
 
 ```
-$ python3 -m unittest --verbose tests/test_utils.py
+$ python3 -m unittest --verbose ssh_clippie/tests/test_utils.py
 test_check_permissions (tests.test_utils.Test) ... ok
 test_display_file_types (tests.test_utils.Test) ... ok
 test_exit_application (tests.test_utils.Test) ... ok

@@ -4,7 +4,7 @@ import os
 
 import click
 
-import utils
+import ssh_clippie.utils
 
 
 @click.command(no_args_is_help=True)
@@ -20,13 +20,15 @@ import utils
 )
 @click.option(
     "--permissions-definition-file",
-    default="permissions_definition.yaml",
+    default=f"{ssh_clippie.__path__[0]}/permissions_definition.yaml",
     type=click.Path(file_okay=True, dir_okay=False, exists=True, readable=True),
     show_default=False,
     help="Permissions definition YAML file",
 )
 def cli(mode, ssh_directory, permissions_definition_file):
     """This script reads permissions definition from YAML file and performs checks against user ssh directory"""
+
+    print(ssh_clippie.__path__)
 
     utils.set_verbose_mode(mode)
     utils.set_ssh_directory(ssh_directory)
