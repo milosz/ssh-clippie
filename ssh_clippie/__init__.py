@@ -28,8 +28,6 @@ import ssh_clippie.utils
 def cli(mode, ssh_directory, permissions_definition_file):
     """This script reads permissions definition from YAML file and performs checks against user ssh directory"""
 
-    print(ssh_clippie.__path__)
-
     utils.set_verbose_mode(mode)
     utils.set_ssh_directory(ssh_directory)
     utils.load_permissions_definition(permissions_definition_file)

@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name="ssh-clippie",
-    version="0.8.4",
+    version="0.8.5",
     author="Milosz",
     author_email="milosz@sleeplessbeastie.eu",
     url="https://github.com/milosz/ssh-clippie",
