@@ -12,8 +12,8 @@ setup(
     long_description=open('README.md').read(),
     install_requires=["click == 8.1.7", "python-magic == 0.4.27", "pyyaml == 6.0.1"],
     packages=["ssh_clippie", "ssh_clippie.utils"],
-    package_data={"ssh_clippie":["permissions_definition.yaml"]},
-    include_package_data=True,
+    #package_data={"ssh_clippie":["permissions_definition.yaml"]},
+    #include_package_data=True,
     entry_points={
         "console_scripts": [
             "ssh-clippie = ssh_clippie:cli",
