@@ -99,8 +99,8 @@ Simple and effective.
 Display help information.
 
 ```
-$ ssh-clippy 
-Usage: ssh-clippy [OPTIONS]
+$ ssh-clippie 
+Usage: ssh-clippie [OPTIONS]
 
   This script reads permissions definition from YAML file and performs checks
   against user ssh directory
@@ -118,7 +118,7 @@ Options:
 Explain rules.
 
 ```
-$ ssh-clippy --explain
+$ ssh-clippie --explain
 Main directory should have permissions set to 700 and can contain OpenSSH private key, OpenSSH public key.
 
 known_hosts (list of host keys known to the user) file which is optional and should have permissions set to 600
@@ -141,7 +141,7 @@ ascii text file matching file type ".*ASCII text.*" should have permissions set 
 Perform check using quiet mode using exit code to determine success or failure.
 
 ```
-$ ssh-clippy --quiet
+$ ssh-clippie --quiet
 ```
 
 ```
@@ -152,7 +152,7 @@ $ echo $?
 Perform check using verbose mode.
 
 ```
-$ ssh-clippy --verbose
+$ ssh-clippie --verbose
 Checking /home/milosz/.ssh directory
 
 Success
@@ -162,7 +162,7 @@ $ echo $?
 
 ```
 $ touch ~/.ssh/known_hosts2
-$ ssh-clippy --verbose
+$ ssh-clippie --verbose
 Checking /home/milosz/.ssh directory
 
 file /home/milosz/.ssh/known_hosts2 should not exist
